@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Как я это делал — Личное дело Захара</title>
+  <meta name="description" content="Отчёт о создании сайта-досье Захара: 4 шага от идеи до публикации." />
+
+  <style>
+    :root {
+      --bg-page: #f6f7f5; --bg-card: #ffffff; --bg-soft: #fafafa; --bg-elevated: #f0f1ef;
+      --border: #e6e8e4; --border-strong: #d4d7d2; --text-primary: #1f2421; --text-secondary: #525a55;
+      --text-muted: #8a8f8b; --c-blue: #2563eb; --c-blue-soft: #e0e9ff; --c-amber: #c2780a;
+      --c-amber-soft: #fbeed1; --c-purple: #6d4ec9; --c-purple-soft: #ece5fb; --c-green: #2f8f63;
+      --c-green-soft: #dbf0e6; --shadow-sm: 0 1px 3px rgba(20, 30, 25, 0.05);
+      --shadow-md: 0 6px 18px rgba(20, 30, 25, 0.06); --shadow-lg: 0 14px 40px rgba(20, 30, 25, 0.08);
+      --radius: 14px; --font-base: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: var(--font-base); background-color: var(--bg-page); color: var(--text-primary); line-height: 1.65; min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    main { max-width: 1100px; margin: 0 auto; padding: 0 5vw; }
+    a { color: inherit; } img { display: block; max-width: 100%; height: auto; }
+    ::selection { background: var(--c-blue); color: #fff; }
+
+    .vb-k7m, .vb-k7m * { box-sizing: border-box; }
+    .vb-k7m { padding: 18px 5vw; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--border); background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 50; }
+    .vb-k7m__back { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 500; border: 1px solid var(--border-strong); background: var(--bg-card); border-radius: 999px; transition: background .2s ease, border-color .2s ease, transform .2s ease; }
+    .vb-k7m__back:hover, .vb-k7m__back:focus-visible { background: var(--bg-elevated); border-color: var(--text-muted); transform: translateX(-2px); outline: none; }
+    .vb-k7m__title { font-size: 15px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-secondary); margin: 0; }
+    .vb-k7m__title span { color: var(--c-blue); }
+    @media (max-width: 640px) { .vb-k7m__title { display: none; } }
+
+    .vb-p2v, .vb-p2v * { box-sizing: border-box; }
+    .vb-p2v { position: relative; padding: 70px 0 30px; }
+    .vb-p2v__eyebrow { display: inline-block; padding: 5px 12px; margin-bottom: 18px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-blue); background: var(--c-blue-soft); border-radius: 999px; font-weight: 500; }
+    .vb-p2v__title { font-size: clamp(30px, 5.5vw, 52px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.08; text-wrap: balance; margin: 0 0 18px; color: var(--text-primary); }
+    .vb-p2v__title em { font-style: normal; color: var(--c-blue); }
+    .vb-p2v__lead { max-width: 62ch; color: var(--text-secondary); font-size: 17px; margin: 0; }
+    .vb-p2v__lead strong { color: var(--text-primary); font-weight: 600; }
+    .vb-p2v__meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+    .vb-p2v__chip { display: inline-flex; align-items: center; padding: 6px 14px; font-size: 13px; color: var(--text-secondary); background: var(--bg-card); border: 1px solid var(--border); border-radius: 999px; }
+
+    .vb-q5t, .vb-q5t *, .vb-r8w, .vb-r8w *, .vb-s1y, .vb-s1y *, .vb-u4z, .vb-u4z * { box-sizing: border-box; }
+    .vb-q5t, .vb-r8w, .vb-s1y, .vb-u4z { position: relative; padding: 40px 0; }
+    .vb-q5t::before, .vb-r8w::before, .vb-s1y::before, .vb-u4z::before { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; background-image: linear-gradient(to bottom, var(--border-strong) 50%, transparent 50%); background-size: 2px 10px; }
+    .vb-q5t::before, .vb-s1y::before { left: 30px; }
+    .vb-r8w::before, .vb-u4z::before { right: 30px; }
+
+    .vb-step__head { display: flex; align-items: center; gap: 18px; margin-bottom: 26px; position: relative; z-index: 2; }
+    .vb-step__num { display: grid; place-items: center; width: 60px; height: 60px; flex-shrink: 0; font-size: 22px; font-weight: 700; border-radius: 50%; background: var(--bg-card); border: 2px solid currentColor; box-shadow: var(--shadow-sm); }
+    .vb-step__heading { display: flex; flex-direction: column; gap: 4px; }
+    .vb-step__title { font-size: clamp(22px, 3.4vw, 30px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; margin: 0; color: var(--text-primary); }
+    .vb-step__title em { font-style: normal; color: currentColor; }
+
+    .vb-step__body { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; position: relative; z-index: 2; }
+    .vb-r8w__body, .vb-u4z__body { direction: rtl; }
+    .vb-r8w__body > *, .vb-u4z__body > * { direction: ltr; }
+
+    .vb-step__text { display: flex; flex-direction: column; gap: 12px; color: var(--text-secondary); font-size: 16px; background: var(--bg-card); padding: 26px 24px; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+    .vb-step__text p { margin: 0; }
+    .vb-step__text strong { color: var(--text-primary); font-weight: 600; }
+    .vb-step__text code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 0.88em; padding: 2px 7px; color: var(--text-primary); background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 6px; }
+    .vb-step__checklist { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-direction: column; gap: 6px; }
+    .vb-step__checklist li { position: relative; padding-left: 24px; font-size: 14px; color: var(--text-secondary); }
+    .vb-step__checklist li::before { content: ""; position: absolute; left: 0; top: 7px; width: 8px; height: 8px; background: currentColor; border-radius: 2px; transform: rotate(45deg); }
+
+    .vb-step__shot { margin: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-md); overflow: hidden; transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+    .vb-step__shot:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--border-strong); }
+    .vb-step__bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border); background: var(--bg-soft); }
+    .vb-step__dots { display: flex; gap: 6px; }
+    .vb-step__dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--border-strong); }
+    .vb-step__dots span:nth-child(1) { background: #ed6a5e; }
+    .vb-step__dots span:nth-child(2) { background: #f4bf4f; }
+    .vb-step__dots span:nth-child(3) { background: #62c554; }
+    .vb-step__tab { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 11px; color: var(--text-muted); margin-left: 8px; }
+
+    .vb-step__image { position: relative; aspect-ratio: 16 / 10; background: var(--bg-elevated); overflow: hidden; }
+    .vb-step__image img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .vb-step__caption { margin-top: 0; padding: 10px 14px; font-size: 12px; color: var(--text-muted); border-left: 3px solid currentColor; background: var(--bg-card); }
+
+    .vb-q5t .vb-step__num, .vb-q5t .vb-step__title em, .vb-q5t .vb-step__checklist, .vb-q5t .vb-step__caption { color: var(--c-blue); }
+    .vb-q5t .vb-step__eyebrow { background: var(--c-blue-soft); color: var(--c-blue); }
+    .vb-r8w .vb-step__num, .vb-r8w .vb-step__title em, .vb-r8w .vb-step__checklist, .vb-r8w .vb-step__caption { color: var(--c-amber); }
+    .vb-r8w .vb-step__eyebrow { background: var(--c-amber-soft); color: var(--c-amber); }
+    .vb-s1y .vb-step__num, .vb-s1y .vb-step__title em, .vb-s1y .vb-step__checklist, .vb-s1y .vb-step__caption { color: var(--c-purple); }
+    .vb-s1y .vb-step__eyebrow { background: var(--c-purple-soft); color: var(--c-purple); }
+    .vb-u4z .vb-step__num, .vb-u4z .vb-step__title em, .vb-u4z .vb-step__checklist, .vb-u4z .vb-step__caption { color: var(--c-green); }
+    .vb-u4z .vb-step__eyebrow { background: var(--c-green-soft); color: var(--c-green); }
+
+    .vb-step__eyebrow { display: inline-block; align-self: flex-start; padding: 3px 10px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 999px; font-weight: 500; width: fit-content; }
+
+    .vb-extra { margin-top: 30px; padding: 36px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+    .vb-extra__title { margin: 0 0 10px; font-size: 24px; font-weight: 700; color: var(--text-primary); }
+    .vb-extra__lead { margin: 0 0 24px; color: var(--text-secondary); font-size: 15px; }
+    .vb-extra__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .vb-extra__card { padding: 18px; background: var(--bg-soft); border: 1px solid var(--border); border-radius: 10px; }
+    .vb-extra__card h4 { margin: 0 0 6px; font-size: 15px; color: var(--text-primary); }
+    .vb-extra__card p { margin: 0; font-size: 13.5px; color: var(--text-secondary); }
+
+    .vb-w6a { margin-top: 50px; padding: 28px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 13px; }
+    .vb-w6a__text { max-width: 1100px; margin: 0 auto; padding: 0 5vw; }
+    .vb-w6a__text strong { color: var(--text-secondary); font-weight: 600; }
+    .vb-w6a__top { display: inline-block; margin-bottom: 12px; color: var(--text-secondary); text-decoration: none; font-weight: 500; font-size: 13px; transition: color .2s ease; }
+    .vb-w6a__top:hover, .vb-w6a__top:focus-visible { color: var(--c-blue); outline: none; }
+
+    .vb-reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease-out, transform .6s ease-out; }
+    .vb-reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 860px) {
+      .vb-step__body, .vb-r8w__body, .vb-u4z__body { grid-template-columns: 1fr; gap: 20px; direction: ltr; }
+      .vb-q5t::before, .vb-s1y::before, .vb-r8w::before, .vb-u4z::before { left: 30px; right: auto; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+      .vb-reveal { opacity: 1; transform: none; }
+      .vb-step__shot:hover { transform: none; }
+      .vb-k7m__back:hover, .vb-k7m__back:focus-visible { transform: none; }
+    }
+  </style>
+</head>
+<body id="top">
+
+  <header class="vb-k7m">
+    <a href="index.html" class="vb-k7m__back">← Назад к досье Захара</a>
+    <h1 class="vb-k7m__title">Личное дело <span>//</span> отчёт о создании</h1>
+  </header>
+
+  <main>
+    <section class="vb-p2v">
+      <span class="vb-p2v__eyebrow">технический отчёт</span>
+      <h2 class="vb-p2v__title">Как я <em>собирал</em> своё досье</h2>
+      <p class="vb-p2v__lead">
+        Этот сайт — учебный проект по информатике. Ниже — четыре шага, которые превратили
+        пустую папку на рабочем столе в полноценный сайт со схемой досье.
+        <strong>Красивый и удобный сайт можно сделать на чистом HTML5 и CSS3</strong>, без лишних фреймворков.
+      </p>
+      <div class="vb-p2v__meta">
+        <span class="vb-p2v__chip">HTML5</span>
+        <span class="vb-p2v__chip">CSS3</span>
+        <span class="vb-p2v__chip">SVG-графика</span>
+        <span class="vb-p2v__chip">GitHub Pages</span>
+      </div>
+    </section>
+
+    <!-- Шаг 1 -->
+    <section class="vb-q5t">
+      <header class="vb-step__head vb-reveal">
+        <div class="vb-step__num">01</div>
+        <div class="vb-step__heading">
+          <span class="vb-step__eyebrow">этап 1</span>
+          <h3 class="vb-step__title">Подготовка <em>и создание файлов</em></h3>
+        </div>
+      </header>
+      <div class="vb-step__body">
+        <div class="vb-step__text vb-reveal">
+          <p>Создал папку проекта <code>my-webside</code> и настроил структуру из двух страниц.</p>
+          <ul class="vb-step__checklist">
+            <li>Создал структуру файлов в VS Code</li>
+            <li>Подобрал палитру в светлых спокойных тонах</li>
+            <li>Спланировал ключевые блоки досье</li>
+          </ul>
+        </div>
+        <figure class="vb-step__shot vb-reveal">
+          <div class="vb-step__bar">
+            <div class="vb-step__dots"><span></span><span></span><span></span></div>
+            <span class="vb-step__tab">~/Desktop/my-webside</span>
+          </div>
+          <div class="vb-step__image">
+            <img src="images/shot-1.png" alt="Структура папки проекта" />
+          </div>
+          <figcaption class="vb-step__caption">Рис. 1 — Структура папки проекта</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Шаг 2 -->
+    <section class="vb-r8w">
+      <header class="vb-step__head vb-reveal">
+        <div class="vb-step__num">02</div>
+        <div class="vb-step__heading">
+          <span class="vb-step__eyebrow">этап 2</span>
+          <h3 class="vb-step__title">Написание <em>HTML-разметки</em></h3>
+        </div>
+      </header>
+      <div class="vb-step__body vb-r8w__body">
+        <div class="vb-step__text vb-reveal">
+          <p>Разметил главную страницу с помощью семантических тегов и добавил SVG-слой со стрелками.</p>
+          <ul class="vb-step__checklist">
+            <li>Семантические блоки тегов</li>
+            <li>Векторные линии-стрелки</li>
+            <li>Связь главной страницы с отчётом</li>
+          </ul>
+        </div>
+        <figure class="vb-step__shot vb-reveal">
+          <div class="vb-step__bar">
+            <div class="vb-step__dots"><span></span><span></span><span></span></div>
+            <span class="vb-step__tab">index.html</span>
+          </div>
+          <div class="vb-step__image">
+            <img src="images/shot-2.png" alt="Разметка главной страницы" />
+          </div>
+          <figcaption class="vb-step__caption">Рис. 2 — Разметка главной страницы</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Шаг 3 -->
+    <section class="vb-s1y">
+      <header class="vb-step__head vb-reveal">
+        <div class="vb-step__num">03</div>
+        <div class="vb-step__heading">
+          <span class="vb-step__eyebrow">этап 3</span>
+          <h3 class="vb-step__title">Стилизация <em>через CSS</em></h3>
+        </div>
+      </header>
+      <div class="vb-step__body">
+        <div class="vb-step__text vb-reveal">
+          <p>Настроил дизайн-токены через <code>:root</code>, позиционирование кругов схемы и плавные анимации.</p>
+          <ul class="vb-step__checklist">
+            <li>Переменные цветов и отступов</li>
+            <li>Адаптивная верстка для телефонов</li>
+            <li>Подсветка стрелок при наведении</li>
+          </ul>
+        </div>
+        <figure class="vb-step__shot vb-reveal">
+          <div class="vb-step__bar">
+            <div class="vb-step__dots"><span></span><span></span><span></span></div>
+            <span class="vb-step__tab">style.css</span>
+          </div>
+          <div class="vb-step__image">
+            <img src="images/shot-3.png" alt="Готовый сайт в браузере" />
+          </div>
+          <figcaption class="vb-step__caption">Рис. 3 — Готовый сайт в браузере</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Шаг 4 -->
+    <section class="vb-u4z">
+      <header class="vb-step__head vb-reveal">
+        <div class="vb-step__num">04</div>
+        <div class="vb-step__heading">
+          <span class="vb-step__eyebrow">этап 4</span>
+          <h3 class="vb-step__title">Размещение на <em>GitHub Pages</em></h3>
+        </div>
+      </header>
+      <div class="vb-step__body vb-u4z__body">
+        <div class="vb-step__text vb-reveal">
+          <p>Создал репозиторий на GitHub и опубликовал проект в сети Интернет.</p>
+          <ul class="vb-step__checklist">
+            <li>Инициализация Git и отправка кода</li>
+            <li>Включение GitHub Pages</li>
+            <li>Проверка работоспособности ссылки</li>
+          </ul>
+        </div>
+        <figure class="vb-step__shot vb-reveal">
+          <div class="vb-step__bar">
+            <div class="vb-step__dots"><span></span><span></span><span></span></div>
+            <span class="vb-step__tab">github.com</span>
+          </div>
+          <div class="vb-step__image">
+            <!-- Пока стоит заглушка. Когда сделаешь скриншот ГитХаба, положи его в папку images как shot-4.png, и эта картинка появится -->
+            <img src="images/shot-4.png" alt="Публикация проекта" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'display:grid; place-items:center; height:100%; color:#8a8f8b; font-size:13px;\'>Добавьте скриншот shot-4.png в папку images</span>';" />
+          </div>
+          <figcaption class="vb-step__caption">Рис. 4 — Публикация проекта</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Карточки особенностей -->
+    <section class="vb-extra vb-reveal">
+      <h3 class="vb-extra__title">Что реализовано в проекте</h3>
+      <p class="vb-extra__lead">Ключевые технологии, применённые при создании интерактивного досье:</p>
+      <div class="vb-extra__grid">
+        <div class="vb-extra__card">
+          <h4>1. SVG-стрелки</h4>
+          <p>Направление стрелок и ортогональные изгибы выполнены на векторном SVG-слое.</p>
+        </div>
+        <div class="vb-extra__card">
+          <h4>2. Загрузка фото</h4>
+          <p>Возможность загрузить собственное изображение в любой кружок кликом мыши или клавиатурой.</p>
+        </div>
+        <div class="vb-extra__card">
+          <h4>3. Плавный интерфейс</h4>
+          <p>Интерактивная подсветка связей и мягкая анимация появления блоков.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="vb-w6a">
+    <div class="vb-w6a__text">
+      <a class="vb-w6a__top" href="#top">↑ Наверх</a>
+      <div>© 2026 · Учебный проект по информатике · Захар</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var revealEls = document.querySelectorAll('.vb-reveal');
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+      } else {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { entry.target.classList.add('is-visible'); io.unobserve(entry.target); }
+          });
+        }, { threshold: 0.12 });
+        revealEls.forEach(function (el) { io.observe(el); });
+      }
+    })();
+  </script>
+</body>
+</html>
